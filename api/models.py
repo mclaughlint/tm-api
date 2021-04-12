@@ -22,3 +22,28 @@ class PersonSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = Person
         load_instance = True
+
+
+class PersonAudit(db.Model):
+    __tablename__ = "person_audit"
+    __table_args__ = {'schema': 'api'}
+    id = db.Column(db.Integer, primary_key=True)
+    stamp = db.Column(db.DateTime)
+    db_user_id = db.Column(db.String)
+    deleted = db.Column(db.Boolean)
+    person_id = db.Column(db.Integer)
+    first_name = db.Column(db.String)
+    middle_name = db.Column(db.String)
+    last_name = db.Column(db.String)
+    email = db.Column(db.String)
+    age = db.Column(db.Integer)
+    meta_create_ts = db.Column(
+        db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
+    )
+    version = db.Column(db.Integer)
+
+
+class PersonAuditSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = PersonAudit
+        load_instance = True

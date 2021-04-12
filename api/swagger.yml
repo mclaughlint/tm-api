@@ -259,6 +259,11 @@ paths:
           description: Id of the person to fetch
           type: integer
           required: True
+        - name: version
+          in: path
+          description: Version of the person record to fetch
+          type: integer
+          required: True
       responses:
         200:
           description: Successfully fetch_one person operation

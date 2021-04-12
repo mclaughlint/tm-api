@@ -1,6 +1,6 @@
 from flask import make_response, abort
 from config import db
-from models import Person, PersonSchema
+from models import Person, PersonSchema, PersonAudit, PersonAuditSchema
 
 
 def fetch_all():
@@ -31,6 +31,42 @@ def fetch_one(id):
         return person_schema.dump(person)
     else:
         abort(404, f'Person not found for Id: {id}')
+
+
+def fetch_one_version(id, version):
+    """
+    This function responds to a GET request for /api/persons/{id}/{version}
+    with one specific version record of a matching person
+    :param id:      ID of person to fetch
+    :param version: version ID of record to fetch
+    :return:        person matching ID and version
+    """
+    # check if they're looking for the latest version
+    person = Person.query \
+        .filter(Person.id == id) \
+        .filter(Person.version == version) \
+        .one_or_none()
+
+    # return latest version
+    if person is not None:
+        person_schema = PersonSchema()
+        return person_schema.dump(person)
+    else:
+        # check if the version exists in person_audit table
+        person_version = PersonAudit.query \
+            .with_entities(PersonAudit.person_id.label('id'), PersonAudit.first_name, PersonAudit.middle_name,
+                           PersonAudit.last_name, PersonAudit.email, PersonAudit.age, PersonAudit.meta_create_ts,
+                           PersonAudit.version) \
+            .filter(PersonAudit.person_id == id) \
+            .filter(PersonAudit.version == version) \
+            .one_or_none()
+
+        # return version
+        if person_version is not None:
+            person_audit_schema = PersonAuditSchema()
+            return person_audit_schema.dump(person_version)
+        else:
+            abort(404, f'Record not found for Id: {id}, Version: {version}')
 
 
 def create(person):
