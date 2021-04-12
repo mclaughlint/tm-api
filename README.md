@@ -8,3 +8,4 @@
  - caching
  - rate-limiting
  - monitoring w/ grafana and influx
+ - remove credentials from code, place in secrets manager

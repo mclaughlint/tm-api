@@ -14,7 +14,7 @@ basePath: /api
 paths:
   /persons:
     get:
-      operationId: resources.person.fetch_all
+      operationId: person.fetch_all
       tags:
         - Persons
       summary: Fetch all persons from the person database
@@ -60,7 +60,7 @@ paths:
                   description: Datetime of when this person record was created
 
     post:
-      operationId: resources.person.create
+      operationId: person.create
       tags:
         - Persons
       summary: Create a person and add it to the person database
@@ -119,13 +119,13 @@ paths:
 
   /persons/{id}:
     get:
-      operationId: resources.person.fetch_one
+      operationId: person.fetch_one
       tags:
         - Persons
       summary: Fetch one person from the person database
       description: Fetch one person from the person database
       parameters:
-        - name: person_id
+        - name: id
           in: path
           description: Id of the person to fetch
           type: integer
@@ -159,7 +159,7 @@ paths:
                 description: Datetime of when this person record was created
 
     put:
-      operationId: resources.person.update
+      operationId: person.update
       tags:
         - Persons
       summary: Update a person in the person database
@@ -193,11 +193,12 @@ paths:
       responses:
         200:
           description: Successfully updated person
+          schema:
             type: object
             properties:
               id:
                 type: integer
-                description: ID numbmer of person
+                description: ID number of person
               first_name:
                 type: string
                 description: First name of person
@@ -218,13 +219,13 @@ paths:
                 description: Datetime of when this person record was created
 
     delete:
-      operationId: resources.person.delete
+      operationId: person.delete
       tags:
         - Persons
       summary: Delete a person from the person database
       description: Delete a person
       parameters:
-        - name: person_id
+        - name: id
           in: path
           type: integer
           description: Id of the person to delete
