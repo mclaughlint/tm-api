@@ -15,6 +15,7 @@ class Person(db.Model):
     meta_create_ts = db.Column(
         db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
     )
+    version = db.Column(db.Integer)
 
 
 class PersonSchema(SQLAlchemyAutoSchema):

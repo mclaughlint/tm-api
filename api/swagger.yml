@@ -58,6 +58,9 @@ paths:
                 create_timestamp:
                   type: string
                   description: Datetime of when this person record was created
+                version:
+                  type: integer
+                  description: Version of record in database
 
     post:
       operationId: person.create
@@ -115,6 +118,9 @@ paths:
               create_timestamp:
                 type: string
                 description: Datetime of when this person record was created
+              version:
+                type: integer
+                description: Version of record in database
 
 
   /persons/{id}:
@@ -157,6 +163,9 @@ paths:
               create_timestamp:
                 type: string
                 description: Datetime of when this person record was created
+              version:
+                type: integer
+                description: Version of record in database
 
     put:
       operationId: person.update
@@ -217,6 +226,9 @@ paths:
               create_timestamp:
                 type: string
                 description: Datetime of when this person record was created
+              version:
+                type: integer
+                description: Version of record in database
 
     delete:
       operationId: person.delete
@@ -233,3 +245,47 @@ paths:
       responses:
         200:
           description: Successfully deleted a person from persons list
+
+  /persons/{id}/{version}:
+    get:
+      operationId: person.fetch_one_version
+      tags:
+        - Persons
+      summary: Fetch one specified version of person from the person database
+      description: Fetch one specified version person from the person database
+      parameters:
+        - name: id
+          in: path
+          description: Id of the person to fetch
+          type: integer
+          required: True
+      responses:
+        200:
+          description: Successfully fetch_one person operation
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: ID numbmer of person
+              first_name:
+                type: string
+                description: First name of person
+              middle_name:
+                type: string
+                description: Middle name of person
+              last_name:
+                type: string
+                description: Last name of person
+              email:
+                type: string
+                description: Email address of person
+              age:
+                type: integer
+                description: Age of person
+              create_timestamp:
+                type: string
+                description: Datetime of when this person record was created
+              version:
+                type: integer
+                description: Version of record in database
