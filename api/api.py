@@ -1,13 +1,15 @@
-from flask import Flask
-from flask_restful import Api
-from api.resources.person import Person
-from api.resources.person_list import PersonList
+import os
+import connexion
 
-app = Flask(__name__)
-api = Api(app)
+CONF_DIR = os.getcwd() + '/conf'
+print(CONF_DIR)
 
-api.add_resource(Person, '/person', '/person/<string:id>')
-api.add_resource(PersonList, '/person/fetch-all')
+# initialize app
+app = connexion.App(__name__, specification_dir='./')
+
+# get endpoint config
+app.add_api(f'{CONF_DIR}/swagger.yml')
+
 
 if __name__ == '__main__':
     app.run(debug=True)

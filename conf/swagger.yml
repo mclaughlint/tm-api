@@ -1,0 +1,234 @@
+swagger: "2.0"
+info:
+  description: Persons API for Noyo Coding Challenge
+  version: "1.0.0"
+  title: Noyo Persons API
+consumes:
+  - application/json
+produces:
+  - application/json
+
+basePath: /api
+
+# Endpoints
+paths:
+  /persons:
+    get:
+      operationId: resources.person.fetch_all
+      tags:
+        - Persons
+      summary: Fetch all persons from the person database
+      description: Fetch all persons from the person database
+#      parameters:
+#        - name: length
+#          in: query
+#          type: integer
+#          description: Number of persons to fetch
+#          required: false
+#        - name: offset
+#          in: query
+#          type: integer
+#          description: Offset from beginning of list where to start gathering persons
+#          required: false
+      responses:
+        200:
+          description: Successful fetch_all persons operation
+          schema:
+            type: array
+            items:
+              properties:
+                id:
+                  type: integer
+                  description: ID numbmer of person
+                first_name:
+                  type: string
+                  description: First name of person
+                middle_name:
+                  type: string
+                  description: Middle name of person
+                last_name:
+                  type: string
+                  description: Last name of person
+                email:
+                  type: string
+                  description: Email address of person
+                age:
+                  type: integer
+                  description: Age of person
+                create_timestamp:
+                  type: string
+                  description: Datetime of when this person record was created
+
+    post:
+      operationId: resources.person.create
+      tags:
+        - Persons
+      summary: Create a person and add it to the person database
+      description: Create a new person in the person database
+      parameters:
+        - name: person
+          in: body
+          description: Person to create
+          required: True
+          schema:
+            type: object
+            properties:
+              first_name:
+                type: string
+                description: First name of person
+              middle_name:
+                type: string
+                description: Middle name of person
+              last_name:
+                type: string
+                description: Last name of person
+              email:
+                type: string
+                description: Email address of person
+              age:
+                type: integer
+                description: Age of person
+      responses:
+        201:
+          description: Successfully created person in list
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: ID numbmer of person
+              first_name:
+                type: string
+                description: First name of person
+              middle_name:
+                type: string
+                description: Middle name of person
+              last_name:
+                type: string
+                description: Last name of person
+              email:
+                type: string
+                description: Email address of person
+              age:
+                type: integer
+                description: Age of person
+              create_timestamp:
+                type: string
+                description: Datetime of when this person record was created
+
+
+  /persons/{id}:
+    get:
+      operationId: resources.person.fetch_one
+      tags:
+        - Persons
+      summary: Fetch one person from the person database
+      description: Fetch one person from the person database
+      parameters:
+        - name: person_id
+          in: path
+          description: Id of the person to fetch
+          type: integer
+          required: True
+      responses:
+        200:
+          description: Successfully fetch_one person operation
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+                description: ID numbmer of person
+              first_name:
+                type: string
+                description: First name of person
+              middle_name:
+                type: string
+                description: Middle name of person
+              last_name:
+                type: string
+                description: Last name of person
+              email:
+                type: string
+                description: Email address of person
+              age:
+                type: integer
+                description: Age of person
+              create_timestamp:
+                type: string
+                description: Datetime of when this person record was created
+
+    put:
+      operationId: resources.person.update
+      tags:
+        - Persons
+      summary: Update a person in the person database
+      description: Update a person in the person database
+      parameters:
+        - name: id
+          in: path
+          description: Id of the person to update
+          type: integer
+          required: True
+        - name: person
+          in: body
+          schema:
+            type: object
+            properties:
+              first_name:
+                type: string
+                description: First name of person
+              middle_name:
+                type: string
+                description: Middle name of person
+              last_name:
+                type: string
+                description: Last name of person
+              email:
+                type: string
+                description: Email address of person
+              age:
+                type: integer
+                description: Age of person
+      responses:
+        200:
+          description: Successfully updated person
+            type: object
+            properties:
+              id:
+                type: integer
+                description: ID numbmer of person
+              first_name:
+                type: string
+                description: First name of person
+              middle_name:
+                type: string
+                description: Middle name of person
+              last_name:
+                type: string
+                description: Last name of person
+              email:
+                type: string
+                description: Email address of person
+              age:
+                type: integer
+                description: Age of person
+              create_timestamp:
+                type: string
+                description: Datetime of when this person record was created
+
+    delete:
+      operationId: resources.person.delete
+      tags:
+        - Persons
+      summary: Delete a person from the person database
+      description: Delete a person
+      parameters:
+        - name: person_id
+          in: path
+          type: integer
+          description: Id of the person to delete
+          required: true
+      responses:
+        200:
+          description: Successfully deleted a person from persons list

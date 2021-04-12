@@ -1,4 +1,10 @@
 # tm-api
 
 # Things to Improve
- - data validation (emails)
+ - more data validation (emails)
+ - add singleton resource endpoints to fetch specific fields
+ - response filtering, sorting, pagination
+ - API users and permission roles
+ - caching
+ - rate-limiting
+ - monitoring w/ grafana and influx
