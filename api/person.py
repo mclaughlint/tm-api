@@ -9,7 +9,7 @@ def fetch_all():
     with the complete lists of persons
     :return:        sorted list of persons
     """
-    persons = Person.query.order_by(Person.id).all()
+    persons = Person.query.order_by(Person.last_name).all()
     person_schema = PersonSchema(many=True)
 
     return person_schema.dump(persons)
