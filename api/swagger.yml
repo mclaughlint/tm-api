@@ -38,8 +38,9 @@ paths:
             items:
               properties:
                 id:
-                  type: integer
-                  description: ID numbmer of person
+                  type: string
+                  format: uuid
+                  description: UUID of person
                 first_name:
                   type: string
                   description: First name of person
@@ -98,8 +99,9 @@ paths:
             type: object
             properties:
               id:
-                type: integer
-                description: ID numbmer of person
+                type: string
+                format: uuid
+                description: UUID of person
               first_name:
                 type: string
                 description: First name of person
@@ -133,8 +135,9 @@ paths:
       parameters:
         - name: id
           in: path
-          description: Id of the person to fetch
-          type: integer
+          description: UUID of the person to fetch
+          type: string
+          format: uuid
           required: True
       responses:
         200:
@@ -143,8 +146,9 @@ paths:
             type: object
             properties:
               id:
-                type: integer
-                description: ID numbmer of person
+                type: string
+                format: uuid
+                description: UUID of person
               first_name:
                 type: string
                 description: First name of person
@@ -176,8 +180,9 @@ paths:
       parameters:
         - name: id
           in: path
-          description: Id of the person to update
-          type: integer
+          description: UUID of the person to update
+          type: string
+          format: uuid
           required: True
         - name: person
           in: body
@@ -206,8 +211,9 @@ paths:
             type: object
             properties:
               id:
-                type: integer
-                description: ID number of person
+                type: string
+                format: uuid
+                description: UUID of person
               first_name:
                 type: string
                 description: First name of person
@@ -239,8 +245,9 @@ paths:
       parameters:
         - name: id
           in: path
-          type: integer
-          description: Id of the person to delete
+          type: string
+          format: uuid
+          description: UUID of the person to delete
           required: true
       responses:
         200:
@@ -256,8 +263,9 @@ paths:
       parameters:
         - name: id
           in: path
-          description: Id of the person to fetch
-          type: integer
+          description: UUID of the person to fetch
+          type: string
+          format: uuid
           required: True
         - name: version
           in: path
@@ -271,8 +279,9 @@ paths:
             type: object
             properties:
               id:
-                type: integer
-                description: ID numbmer of person
+                type: string
+                format: uuid
+                description: UUID of person
               first_name:
                 type: string
                 description: First name of person

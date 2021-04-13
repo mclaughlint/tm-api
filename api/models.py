@@ -1,12 +1,13 @@
 from datetime import datetime
 from config import db
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
+from sqlalchemy.dialects.postgresql import UUID
 
 
 class Person(db.Model):
     __tablename__ = "person"
     __table_args__ = {'schema': 'api'}
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(UUID(as_uuid=True), primary_key=True)
     first_name = db.Column(db.String)
     middle_name = db.Column(db.String)
     last_name = db.Column(db.String)

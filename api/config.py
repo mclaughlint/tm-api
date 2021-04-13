@@ -9,7 +9,7 @@ connex_app = connexion.App(__name__, specification_dir=BASE_DIR)
 
 app = connex_app.app
 
-pg_uri = 'postgresql+psycopg2://noyoapi:noyo@localhost/noyo'
+pg_uri = 'postgresql+psycopg2://noyoapi:noyo@db:5432/noyo'
 
 # SQLAlchemy conf
 app.config['SQLALCHEMY_ECHO'] = True

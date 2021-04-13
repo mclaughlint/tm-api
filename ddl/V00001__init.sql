@@ -1,15 +1,17 @@
 -- Initialize the database.
 
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
 CREATE TABLE IF NOT EXISTS api.person
 (
-    id             SERIAL PRIMARY KEY,
+    id             uuid    DEFAULT uuid_generate_v4() PRIMARY KEY,
     first_name     TEXT         NOT NULL,
     middle_name    TEXT,
     last_name      TEXT         NOT NULL,
     email          VARCHAR(255) NOT NULL,
     age            INTEGER      NOT NULL,
     meta_create_ts timestamptz,
-    version        INTEGER      DEFAULT 1
+    version        INTEGER DEFAULT 1
 );
 
 CREATE TABLE IF NOT EXISTS api.person_audit
