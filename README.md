@@ -1,14 +1,19 @@
 # tm-api
+ - Basic REST API for Noyo Challenge
 
-# Things to Improve
- - more data validation (emails)
- - add singleton resource endpoints to fetch specific fields
+# Usage
+ - Run app locally: `docker-compose up`
+   - Swagger UI: `http://localhost:5000/api/ui/`
+   - Run tests: `pytest -v tests`
+
+# Things to Add/Improve
+ - JWT authentication layer
+ - data validation (e.g. email addresses)
  - response filtering, sorting, pagination
  - API users and permission roles
  - caching
  - rate-limiting
  - monitoring w/ grafana and influx
  - remove credentials from code, place in secrets manager
- - change person ID from INT to UUID
  - logging
- - tests pytest-docker-compose to spin up/tear down test containers
+ - pytest-docker-compose to spin up/tear down test containers

@@ -1,3 +1,7 @@
+"""
+Configuration for SQLAlchemy
+initialize connexion and SQLAlchemy
+"""
 import os
 import connexion
 from flask_sqlalchemy import SQLAlchemy
@@ -9,11 +13,11 @@ connex_app = connexion.App(__name__, specification_dir=BASE_DIR)
 
 app = connex_app.app
 
-# init SQLAlchemy db
-pg_uri = 'postgresql+psycopg2://noyoapi:noyo@db:5432/noyo'
-
 # SQLAlchemy conf
+PG_URI = 'postgresql+psycopg2://noyoapi:noyo@db:5432/noyo'
 app.config['SQLALCHEMY_ECHO'] = True
-app.config['SQLALCHEMY_DATABASE_URI'] = pg_uri
+app.config['SQLALCHEMY_DATABASE_URI'] = PG_URI
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# init SQLAlchemy db
 db = SQLAlchemy(app)

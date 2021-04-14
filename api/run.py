@@ -1,12 +1,18 @@
+"""
+Entrypoint file to start API
+"""
 import config
 
 
 def create_app():
+    """
+    Initialize flask app
+    :return:
+    """
     connex_app = config.connex_app
-    connex_app.add_api(f'swagger.yml')  # get endpoint config
-    flask_app = connex_app.app
+    connex_app.add_api('swagger.yml')  # get endpoint config
 
-    return flask_app
+    return connex_app
 
 
 if __name__ == '__main__':

@@ -22,7 +22,6 @@ CREATE TABLE IF NOT EXISTS api.person_audit
     db_user_id     VARCHAR(255),
     deleted        BOOLEAN      NOT NULL DEFAULT FALSE,
     -- attributes from person
-    -- person_id      INTEGER      NOT NULL REFERENCES api.person (id) ON DELETE RESTRICT, -- primary key from person
     person_id      uuid         NOT NULL,
     first_name     TEXT         NOT NULL,
     middle_name    TEXT,

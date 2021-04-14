@@ -1,3 +1,9 @@
+"""
+Methods for handling CRUD actions on Person objects
+"""
+import logging
+
+import sqlalchemy.exc
 from flask import make_response, abort
 from config import db
 from models import Person, PersonSchema, PersonAudit, PersonAuditSchema
@@ -7,12 +13,15 @@ def fetch_all():
     """
     This function responds to a GET request for /api/persons
     with the complete lists of persons
-    :return:        sorted list of persons
+    :return: sorted list of persons
     """
-    persons = Person.query.order_by(Person.last_name).all()
-    person_schema = PersonSchema(many=True)
+    try:
+        persons = Person.query.order_by(Person.last_name).all()
+        person_schema = PersonSchema(many=True)
 
-    return person_schema.dump(persons)
+        return person_schema.dump(persons)
+    except sqlalchemy.exc.SQLAlchemyError as e:
+        logging.error(f'SQLAlchemyError: {e}')
 
 
 def fetch_one(person_id):
@@ -20,17 +29,21 @@ def fetch_one(person_id):
     This function responds to a GET request for /api/persons/{id}
     with one matching person
     :param person_id:   UUID of person to fetch
-    :return:        person matching ID
+    :return:            person matching ID
     """
-    person = Person.query \
-        .filter(Person.id == person_id) \
-        .one_or_none()
+    try:
+        person = Person.query \
+            .filter(Person.id == person_id) \
+            .one_or_none()
 
-    if person is not None:
+        if person is None:
+            abort(404, f'Person not found for Id: {person_id}')
+
         person_schema = PersonSchema()
         return person_schema.dump(person)
-    else:
-        abort(404, f'Person not found for Id: {person_id}')
+
+    except sqlalchemy.exc.SQLAlchemyError as e:
+        logging.error(f'SQLAlchemyError: {e}')
 
 
 def fetch_one_version(person_id, version):
@@ -41,17 +54,18 @@ def fetch_one_version(person_id, version):
     :param version: version ID of record to fetch
     :return:        person matching ID and version
     """
-    # check if they're looking for the latest version
-    person = Person.query \
-        .filter(Person.id == person_id) \
-        .filter(Person.version == version) \
-        .one_or_none()
+    try:
+        # check if they're looking for the latest version
+        person = Person.query \
+            .filter(Person.id == person_id) \
+            .filter(Person.version == version) \
+            .one_or_none()
 
-    # return latest version
-    if person is not None:
-        person_schema = PersonSchema()
-        return person_schema.dump(person)
-    else:
+        # return latest version
+        if person is not None:
+            person_schema = PersonSchema()
+            return person_schema.dump(person)
+
         # check if the version exists in person_audit table
         person_version = PersonAudit.query \
             .with_entities(PersonAudit.person_id.label('id'), PersonAudit.first_name, PersonAudit.middle_name,
@@ -65,8 +79,10 @@ def fetch_one_version(person_id, version):
         if person_version is not None:
             person_audit_schema = PersonAuditSchema()
             return person_audit_schema.dump(person_version)
-        else:
-            abort(404, f'Record not found for Id: {person_id}, Version: {version}')
+
+        abort(404, f'Record not found for Id: {person_id}, Version: {version}')
+    except sqlalchemy.exc.SQLAlchemyError as e:
+        logging.error(f'SQLAlchemyError: {e}')
 
 
 def create(person):
@@ -74,34 +90,34 @@ def create(person):
     This function creates a new person in the persons database
     based on the passed in person data
     :param person:  person to create in persons structure
-    :return:        201 on success, 406 on person already exists
+    :return:        201 on success, 409 on person already exists
     """
     first_name = person.get('first_name')
-    last_name = person.get ('last_name')
+    last_name = person.get('last_name')
     email = person.get('email')
     age = person.get('age')
 
-    # Check if person exists already
-    existing_person = Person.query \
-        .filter(Person.first_name == first_name) \
-        .filter(Person.last_name == last_name) \
-        .filter(Person.email == email) \
-        .filter(Person.age == age) \
-        .one_or_none()
+    try:
+        # Check if person exists already
+        existing_person = Person.query \
+            .filter(Person.first_name == first_name) \
+            .filter(Person.last_name == last_name) \
+            .filter(Person.email == email) \
+            .filter(Person.age == age) \
+            .one_or_none()
 
-    if existing_person is None:
-        person_schema = PersonSchema()
-        new_person = person_schema.load(person, session=db.session)
-        db.session.add(new_person)
-        db.session.commit()
+        if existing_person is None:
+            person_schema = PersonSchema()
+            new_person = person_schema.load(person, session=db.session)
+            db.session.add(new_person)
+            db.session.commit()
 
-        data = person_schema.dump(new_person)
-        return data, 201
-    else:
-        abort(
-            409,
-            f"Person with name {first_name} {last_name} already exists"
-        )
+            data = person_schema.dump(new_person)
+            return data, 201
+
+        abort(409, f"Person with name {first_name} {last_name} already exists")
+    except sqlalchemy.exc.SQLAlchemyError as e:
+        logging.error(f'SQLAlchemyError: {e}')
 
 
 def update(person_id, person):
@@ -146,19 +162,18 @@ def delete(person_id):
     :param person_id:   ID of person to delete
     :return:     200 on successful delete, 404 if not found
     """
-    # Get the person requested
-    person = Person.query.filter(Person.id == person_id).one_or_none()
+    try:
+        # Get the person requested
+        person = Person.query.filter(Person.id == person_id).one_or_none()
 
-    if person is not None:
-        db.session.delete(person)
-        db.session.commit()
-        return make_response(
-            f"Person {person_id} deleted", 200
-        )
+        if person is not None:
+            db.session.delete(person)
+            db.session.commit()
+            return make_response(
+                f"Person {person_id} deleted", 200
+            )
 
-    # Couldn't find person
-    else:
-        abort(
-            404,
-            f"Person not found for Id: {person_id}",
-        )
+        # Couldn't find person
+        abort(404, f"Person not found for Id: {person_id}")
+    except sqlalchemy.exc.SQLAlchemyError as e:
+        logging.error(f'SQLAlchemyError: {e}')

@@ -1,3 +1,7 @@
+"""
+SQLAlchemy and Marshmallow Models
+for storing, retrieving, serializing, deserializing Person data
+"""
 from datetime import datetime
 from config import db
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
@@ -5,6 +9,9 @@ from sqlalchemy.dialects.postgresql import UUID
 
 
 class Person(db.Model):
+    """
+    api.person SQLAlchemy model
+    """
     __tablename__ = "person"
     __table_args__ = {'schema': 'api'}
     id = db.Column(UUID(as_uuid=True), primary_key=True, server_default=db.text("uuid_generate_v4()"))
@@ -20,12 +27,18 @@ class Person(db.Model):
 
 
 class PersonSchema(SQLAlchemyAutoSchema):
+    """
+    api.person marshmallow model
+    """
     class Meta:
         model = Person
         load_instance = True
 
 
 class PersonAudit(db.Model):
+    """
+    api.person_audit SQLAlchemy model
+    """
     __tablename__ = "person_audit"
     __table_args__ = {'schema': 'api'}
     id = db.Column(db.Integer, primary_key=True)
@@ -45,6 +58,9 @@ class PersonAudit(db.Model):
 
 
 class PersonAuditSchema(SQLAlchemyAutoSchema):
+    """
+    api.person_audit marshmallow model
+    """
     class Meta:
         model = PersonAudit
         load_instance = True
