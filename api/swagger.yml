@@ -34,34 +34,7 @@ paths:
         200:
           description: Successful fetch_all persons operation
           schema:
-            type: array
-            items:
-              properties:
-                id:
-                  type: string
-                  format: uuid
-                  description: UUID of person
-                first_name:
-                  type: string
-                  description: First name of person
-                middle_name:
-                  type: string
-                  description: Middle name of person
-                last_name:
-                  type: string
-                  description: Last name of person
-                email:
-                  type: string
-                  description: Email address of person
-                age:
-                  type: integer
-                  description: Age of person
-                create_timestamp:
-                  type: string
-                  description: Datetime of when this person record was created
-                version:
-                  type: integer
-                  description: Version of record in database
+            $ref: "#/definitions/Persons"
 
     post:
       operationId: person.create
@@ -96,33 +69,7 @@ paths:
         201:
           description: Successfully created person in list
           schema:
-            type: object
-            properties:
-              id:
-                type: string
-                format: uuid
-                description: UUID of person
-              first_name:
-                type: string
-                description: First name of person
-              middle_name:
-                type: string
-                description: Middle name of person
-              last_name:
-                type: string
-                description: Last name of person
-              email:
-                type: string
-                description: Email address of person
-              age:
-                type: integer
-                description: Age of person
-              create_timestamp:
-                type: string
-                description: Datetime of when this person record was created
-              version:
-                type: integer
-                description: Version of record in database
+            $ref: "#/definitions/Person"
 
 
   /persons/{person_id}:
@@ -143,33 +90,7 @@ paths:
         200:
           description: Successfully fetch_one person operation
           schema:
-            type: object
-            properties:
-              id:
-                type: string
-                format: uuid
-                description: UUID of person
-              first_name:
-                type: string
-                description: First name of person
-              middle_name:
-                type: string
-                description: Middle name of person
-              last_name:
-                type: string
-                description: Last name of person
-              email:
-                type: string
-                description: Email address of person
-              age:
-                type: integer
-                description: Age of person
-              create_timestamp:
-                type: string
-                description: Datetime of when this person record was created
-              version:
-                type: integer
-                description: Version of record in database
+            $ref: "#/definitions/Person"
 
     put:
       operationId: person.update
@@ -208,33 +129,7 @@ paths:
         200:
           description: Successfully updated person
           schema:
-            type: object
-            properties:
-              id:
-                type: string
-                format: uuid
-                description: UUID of person
-              first_name:
-                type: string
-                description: First name of person
-              middle_name:
-                type: string
-                description: Middle name of person
-              last_name:
-                type: string
-                description: Last name of person
-              email:
-                type: string
-                description: Email address of person
-              age:
-                type: integer
-                description: Age of person
-              create_timestamp:
-                type: string
-                description: Datetime of when this person record was created
-              version:
-                type: integer
-                description: Version of record in database
+            $ref: "#/definitions/Person"
 
     delete:
       operationId: person.delete
@@ -276,30 +171,48 @@ paths:
         200:
           description: Successfully fetch_one person operation
           schema:
-            type: object
-            properties:
-              id:
-                type: string
-                format: uuid
-                description: UUID of person
-              first_name:
-                type: string
-                description: First name of person
-              middle_name:
-                type: string
-                description: Middle name of person
-              last_name:
-                type: string
-                description: Last name of person
-              email:
-                type: string
-                description: Email address of person
-              age:
-                type: integer
-                description: Age of person
-              create_timestamp:
-                type: string
-                description: Datetime of when this person record was created
-              version:
-                type: integer
-                description: Version of record in database
+            $ref: "#/definitions/Person"
+
+definitions:
+  Persons:
+    type: array
+    items:
+      $ref: "#/definitions/Person"
+
+  Person:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uuid
+        description: UUID of person
+      first_name:
+        type: string
+        description: First name of person
+      middle_name:
+        type: string
+        description: Middle name of person
+      last_name:
+        type: string
+        description: Last name of person
+      email:
+        type: string
+        description: Email address of person
+      age:
+        type: integer
+        description: Age of person
+      meta_create_ts:
+        type: string
+        description: Datetime of when this person record was created
+      version:
+        type: integer
+        description: Version of record in database
+    example:
+      id: "00fcadad-8aab-4a84-a5b9-1bdec7d5ed47"
+      first_name: "Joe"
+      middle_name: "Randall"
+      last_name: "Schmoe"
+      email: "test@gmail.com"
+      age: 55
+      meta_create_ts: "2021-04-14T14:19:57.666669+00:00"
+      version: 1
