@@ -6,3 +6,6 @@ marshmallow==3.11.1
 marshmallow-sqlalchemy==0.24.2
 PyJWT==2.0.1
 psycopg2-binary==2.8.6
+pytest==6.2.3
+pytest-cov==2.11.1
+pytest-flask==1.2.0

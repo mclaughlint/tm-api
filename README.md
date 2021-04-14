@@ -10,3 +10,4 @@
  - monitoring w/ grafana and influx
  - remove credentials from code, place in secrets manager
  - change person ID from INT to UUID
+ - logging
